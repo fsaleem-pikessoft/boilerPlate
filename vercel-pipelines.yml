@@ -1,0 +1,41 @@
+#trigger:
+#- staging
+ 
+#pool:
+#  vmImage: ubuntu-latest
+ 
+#steps:
+#- task: vercel-deployment-task@1
+#  inputs:
+#    vercelProjectId: 'prj_mtYj0MP83muZkYDs2DIDfasdas' //Example Vercel Project ID
+#    vercelOrgId: '3Gcd2ASTsPxwxTsYBwJTB11p' //Example Vercel Personal Account ID
+#    vercelToken: $(VERCEL_TOKEN)
+#    production: true
+
+trigger:
+  branches:
+    include:
+      - staging
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: NodeTool@0
+    inputs:
+      versionSpec: '18.x' # Specify the Node.js version you need
+    displayName: 'Install Node.js'
+
+  - script: |
+      npm install -g vercel
+    displayName: 'Install Vercel CLI'
+
+  - checkout: self
+    displayName: 'Checkout Repository'
+
+  - script: |
+      vercel --prod --token=$(VERCEL_TOKEN) --yes
+    displayName: 'Deploy to Vercel'
+    
+    env:
+      VERCEL_TOKEN: $(VERCEL_TOKEN)  # Use the secret Vercel token from Azure DevOps pipeline environment variables
