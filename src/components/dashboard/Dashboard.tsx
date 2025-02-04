@@ -11,7 +11,16 @@ const DashboardPage = () => {
   return (
     <Row gutter={16} style={{ margin: "30px" }}>
       {networks.map((network) => (
-        <Col  xs={24} sm={24} md={24} lg={8} xl={8} xxl={8} key={network.link} style={{display:"grid"}}>
+        <Col
+          xs={24}
+          sm={24}
+          md={24}
+          lg={8}
+          xl={8}
+          xxl={8}
+          key={network.link}
+          style={{ display: "grid" }}
+        >
           <Card
             title={network.name}
             style={{ boxShadow: "0px 0px 2px rgba(0,0,0,0.3)" }}
@@ -22,11 +31,14 @@ const DashboardPage = () => {
                   key={project.id}
                   span={8}
                   style={{ textAlign: "center", cursor: "pointer" }}
-                  onClick={() =>
-                    router.push(`/${network.link}${project.link}`)
-                  }
+                  onClick={() => router.push(`/${network.link}${project.link}`)}
                 >
-                  <Avatar size={32} icon={project.icon ? React.createElement(project.icon) : null} />
+                  <Avatar
+                    size={32}
+                    icon={
+                      project.icon ? React.createElement(project.icon) : null
+                    }
+                  />
                   <p style={{ fontSize: "10px" }}>{project.name}</p>
                 </Col>
               ))}

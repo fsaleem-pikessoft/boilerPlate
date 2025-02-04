@@ -29,8 +29,12 @@ const Sidebar: React.FC = () => {
   const currentNetwork = pathParts[0];
   const currentProject = pathParts[1];
 
-  const selectedNetwork = networks.find((network) => network.link === currentNetwork);
-  const selectedProject = selectedNetwork?.projects.find((project) => project.link === `/${currentProject}`);
+  const selectedNetwork = networks.find(
+    (network) => network.link === currentNetwork,
+  );
+  const selectedProject = selectedNetwork?.projects.find(
+    (project) => project.link === `/${currentProject}`,
+  );
 
   const items = [
     {
@@ -49,16 +53,32 @@ const Sidebar: React.FC = () => {
     items.push(
       ...selectedNetwork.projects.map((project) => ({
         key: `project-${project.id}`,
-        icon: project.icon ? React.createElement(project.icon) : <DesktopOutlined />,
-        label: <Link href={`/${selectedNetwork.link}${project.link}`}>{project.name}</Link>,
-      }))
+        icon: project.icon ? (
+          React.createElement(project.icon)
+        ) : (
+          <DesktopOutlined />
+        ),
+        label: (
+          <Link href={`/${selectedNetwork.link}${project.link}`}>
+            {project.name}
+          </Link>
+        ),
+      })),
     );
   }
 
-  const selectedKeys = selectedProject ? [`project-${selectedProject.id}`] : ["dashboard"];
+  const selectedKeys = selectedProject
+    ? [`project-${selectedProject.id}`]
+    : ["dashboard"];
 
   return (
-    <div style={{ width: collapsed ? 80 : 256, height: "100vh", transition: "width 0.3s ease-in-out" }}>
+    <div
+      style={{
+        width: collapsed ? 80 : 256,
+        height: "100vh",
+        transition: "width 0.3s ease-in-out",
+      }}
+    >
       <Button
         type="primary"
         onClick={() => setCollapsed(!collapsed)}

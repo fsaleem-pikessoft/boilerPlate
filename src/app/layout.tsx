@@ -28,7 +28,7 @@ const ClientLayoutWrapper = dynamic(
   () => import("../components/layouts/ClientLayoutWrapper"),
   {
     ssr: false,
-  }
+  },
 );
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {

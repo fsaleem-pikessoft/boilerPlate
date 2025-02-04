@@ -9,8 +9,8 @@ import {
   AuthContextType,
 } from "../utils/interfaces/authContextInterfaces";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from 'react-redux';
-import { selectAuth, setUser } from '../redux/authSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { selectAuth, setUser } from "../redux/authSlice";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -51,7 +51,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = (userData: User) => {
     if (userData && userData.email && userData.password) {
-      if (userData.email !== hardcodedEmail || userData.password !== hardcodedPassword) {
+      if (
+        userData.email !== hardcodedEmail ||
+        userData.password !== hardcodedPassword
+      ) {
         toast.error("Invalid email or password");
       } else {
         setUser(userData);

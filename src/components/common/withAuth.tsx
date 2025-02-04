@@ -9,7 +9,7 @@ interface AuthContext {
 }
 
 const withAuth = <P extends object>(
-  WrappedComponent: ComponentType<P>
+  WrappedComponent: ComponentType<P>,
 ): FC<P> => {
   const WithAuthComponent: FC<P> = (props) => {
     const { user } = useAuth() as AuthContext;

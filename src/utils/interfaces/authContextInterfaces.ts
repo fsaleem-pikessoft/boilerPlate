@@ -11,4 +11,4 @@ export interface AuthContextType {
   logout: () => void;
   loading: boolean;
   candidateUser: any; // Adjust type as necessary
-} 
+}

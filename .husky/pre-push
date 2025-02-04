@@ -1,6 +1,6 @@
 #!/bin/bash
 
-npm run build
+yarn run build
 
 if [[ $? -eq 0 ]]; then
     echo "Build successful!"
