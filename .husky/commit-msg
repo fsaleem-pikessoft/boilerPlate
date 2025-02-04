@@ -1,0 +1,10 @@
+echo '#!/bin/sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+message=$(cat "$1")
+requiredPattern="^CSF-[0-9]+: .+$"
+
+if ! echo "$message" | grep -Eq "$requiredPattern"; then
+  echo "❌ Invalid commit message format!"
+  exit 1
+fi' > .husky/commit-msg
