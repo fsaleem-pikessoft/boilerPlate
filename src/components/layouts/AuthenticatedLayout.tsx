@@ -1,31 +1,32 @@
 import { useState } from "react";
 import Sidebar from "../common/sidebar";
-import Header from "../common/header";
 import { AuthenticatedLayoutProps } from "../../utils/interfaces/layoutInterfaces";
-import { useAuth } from "../../contexts/AuthContext";
+import { useSelector } from 'react-redux';
+import { selectAuth } from '../../redux/authSlice';
+import Header from "../common/header";
 
 const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
   children,
 }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { user } = useAuth();
+  const { user } = useSelector(selectAuth);
+  const [collapsed, setCollapsed] = useState(false);
+
+  console.log("Current user state:", user);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setCollapsed(!collapsed);
   };
 
   return (
     <div className="flex h-screen">
-      {user?.email && (
-        <div className="relative z-20">
-          <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+      {user && (
+        <div className="relative z-10 bg-white">
+          <Sidebar/>
         </div>
       )}
       <div className="flex flex-col flex-1 overflow-hidden">
-        {user?.email && (
-          <div className="relative z-10">
-            <Header toggleSidebar={toggleSidebar} />
-          </div>
+        {user && (          
+            <Header toggleSidebar={toggleSidebar} />         
         )}
         <main className="flex-1 overflow-x-hidden overflow-y-auto bg-white">
           {children}

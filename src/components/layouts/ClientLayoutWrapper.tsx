@@ -6,9 +6,11 @@ import AuthenticatedLayout from "./AuthenticatedLayout";
 import UnauthenticatedLayout from "./UnauthenticatedLayout";
 import { usePathname } from "next/navigation";
 import { ClientLayoutWrapperProps } from "../../utils/interfaces/layoutInterfaces";
+import { selectAuth } from "../../redux/authSlice";
+import { useSelector } from "react-redux";
 
 const ClientLayoutWrapper: FC<ClientLayoutWrapperProps> = ({ children }) => {
-  const { user, candidateUser } = useAuth();
+  const { user } = useSelector(selectAuth);
   const pathname = usePathname();
 
   if (user?.email) {

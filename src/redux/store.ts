@@ -1,19 +1,22 @@
 import { configureStore } from "@reduxjs/toolkit";
-import organizationRegistrationSlice from "../redux/slices/organizationRegistrationSlice";
-import questionRecordSlice from "./slices/candidateQuestionSlice";
-import createInterviewSlice from "./slices/createInterviewSlice";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage"; // Uses localStorage
+import authReducer from "./authSlice";
 
-export const makeStore = () => {
-  return configureStore({
-    reducer: {
-      organizationRegistration: organizationRegistrationSlice,
-      questionRecords: questionRecordSlice,
-      createInterview: createInterviewSlice, 
-    },
-  });
+const persistConfig = {
+  key: "auth",
+  storage,
 };
 
-export const store = makeStore();
+const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+
+export const store = configureStore({
+  reducer: {
+    auth: persistedAuthReducer,
+  },
+});
+
+export const persistor = persistStore(store);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

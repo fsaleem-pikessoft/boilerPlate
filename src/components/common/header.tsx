@@ -1,56 +1,53 @@
 import Image from "next/image";
-import Grid from "@mui/material/Grid2";
-import { Avatar } from "@mui/material";
+import { Avatar, Card, Col, Row, Dropdown } from "antd";
+import { selectAuth } from '../../redux/authSlice';
+import { useSelector } from 'react-redux';
 import { useAuth } from "../../contexts/AuthContext";
-import { HEADER } from "../../utils/common";
 
 interface HeaderProps {
   toggleSidebar: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ toggleSidebar }) => {
-  const { user } = useAuth();
+const Header: React.FC<HeaderProps> = () => {
+  const { user } = useSelector(selectAuth);
+  const { logout } = useAuth();
 
-  return (
-    <header className="bg-white border-b sticky top-0 z-50 rounded-lg">
-      <Grid container spacing={2}>
-        <Grid
-          size={{ xs: 2, md: 2 }}
-          className="justify-items-end mt-2 mb-2 ml-[65px] sm:ml-[50px] md:ml-0"
-        >
-          <Avatar src={HEADER?.profileLogo} sx={{ width: 86, height: 86 }} />
-        </Grid>
-        <Grid size={{ xs: 8, md: 4 }} className="mt-2">
-          <Grid size={{ xs: 12, md: 12 }} className="mt-2">
-            <span className="font-bold">
-              {HEADER.heading} {user?.first_name} {user?.last_name}
-            </span>
-          </Grid>
-          <Grid size={{ xs: 12, md: 12 }} className="mt-2">
-            <p className="font-normal">{HEADER.paragraph}</p>
-          </Grid>
-        </Grid>
-        <Grid size={{ xs: 6, md: 4 }} className="text-center">
-          <input
-            type="text"
-            placeholder="Type Here..."
-            className="border rounded p-2 mt-7"
-          />
-          <button className="bg-primary text-white rounded p-2 mt-7 mb-2">
-            Search
-          </button>
-        </Grid>
-        <Grid size={{ xs: 6, md: 2 }} className="text-center">
-          <Image
-            src={HEADER?.logo}
-            alt="VirtuHire"
-            width={170}
-            height={50}
-            className="mt-7 mb-2"
-          />
-        </Grid>
-      </Grid>
-    </header>
+  return (    
+     <Row gutter={16}>
+      <Col span={24}>
+      <Card style={{borderRadius:"0px",border:"none"}}>
+      <Row gutter={16} align="middle" justify="space-between"> 
+  <Col xs={24} sm={24} md={18} lg={20} xl={20} xxl={20}>
+    <Row gutter={16} align="middle">
+      <Col xs={24} sm={24} md={24} lg={12} xl={12} xxl={12} style={{ display: "flex", alignItems: "center", justifyContent: "flex-start" }}>
+        <Image src="/images/CloudshiftHorizontal.png" width={100} height={20} alt="image" />
+        <span style={{ fontWeight: "bold", marginLeft: "5px",fontSize:"17px" }}>IIRD Framework</span>
+      </Col>
+    </Row>
+  </Col> 
+  <Col xs={12} sm={12} md={3} lg={3} xl={3} xxl={3} style={{ textAlign: "right", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+    <p style={{ margin: 0 }}>{user?.email}</p>
+  </Col>  
+  <Col xs={12} sm={12} md={3} lg={1} xl={1} xxl={1} >
+    <Dropdown
+      menu={{
+        items: [
+          {
+            key: "logout",
+            label: <button onClick={logout}>Logout</button>,
+          },
+        ],
+      }}
+      trigger={["hover"]}
+    >
+      <Avatar size={32} src="/images/avatar.svg" />
+    </Dropdown>
+  </Col>
+</Row>
+          
+      </Card> 
+      </Col>     
+     </Row>    
   );
 };
 

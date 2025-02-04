@@ -1,3 +1,3 @@
 export interface ProtectedRouteProps {
-    userId?: string;
-  }
+  user: any;
+} 

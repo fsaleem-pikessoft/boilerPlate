@@ -2,20 +2,27 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
+import Cookies from "js-cookie";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import {
   User,
   AuthContextType,
 } from "../utils/interfaces/authContextInterfaces";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from 'react-redux';
+import { selectAuth, setUser } from '../redux/authSlice';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user] = useState<User | null>(null);
+  const dispatch = useDispatch();
   const [candidateUser, setCandidateUser] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
+
+  const { hardcodedEmail, hardcodedPassword } = useSelector(selectAuth);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -31,22 +38,28 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   useEffect(() => {
+    const token = Cookies.get("token");
     if (user?.email && pathname.startsWith("/auth")) {
-      if (user?.organizationId == null) {
-        router.push("/lets-go");
+      debugger;
+      if (token == "") {
+        router.push("/login");
       } else {
-        router.push("/company-details");
+        router.push("/dashboard");
       }
     }
   }, [user, pathname, router]);
 
   const login = (userData: User) => {
-    setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    if (userData?.organizationId == null) {
-      router.push("/lets-go");
+    if (userData && userData.email && userData.password) {
+      if (userData.email !== hardcodedEmail || userData.password !== hardcodedPassword) {
+        toast.error("Invalid email or password");
+      } else {
+        setUser(userData);
+        localStorage.setItem("user", JSON.stringify(userData));
+        router.push("/dashboard");
+      }
     } else {
-      router.push("/company-details");
+      toast.error("Invalid user data");
     }
   };
 
@@ -56,8 +69,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const logout = () => {
-    setUser(null);
+    dispatch(setUser(null));
     localStorage.removeItem("user");
+    toast.success("LogOut Successfully");
     router.push("/auth/login");
   };
 

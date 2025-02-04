@@ -20,14 +20,18 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/app/page.tsx", "src/app/auth/resetPassword/[token]/page.tsx", "src/app/storeProvider.tsx"  ],
+    "**/*.tsx",
+    "src/app/page.tsx",
+    "src/app/auth/resetPassword/[token]/page.tsx",
+    "src/app/storeProvider.tsx"
+  ],
   "exclude": [
     "node_modules"
   ]
